@@ -9,6 +9,7 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,9 @@ public class OrderController {
 
     @Autowired
     private MsgProducer producer;
+
+    @Value("${test.url}")
+    private String url;
 
     /**
      * 微信支付回调接口
@@ -39,5 +43,11 @@ public class OrderController {
         //打印发送结果
         System.out.println("发送响应：" + sendResult.getMsgId() + ",发送状态：" + sendResult.getSendStatus());
         return JsonData.buildSuccess();
+    }
+
+
+    @GetMapping("profiles")
+    public Object profiles(){
+        return JsonData.buildSuccess(url);
     }
 }
